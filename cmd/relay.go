@@ -17,7 +17,7 @@ func NewRelayCommand() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String("port", "8080", "proxy port, default 8080")
+	cmd.Flags().StringP("port", "p", "8080", "proxy port, default 8080")
 
 	return cmd
 }
@@ -29,6 +29,7 @@ func relay(port string) {
 		log.Printf("[sys] get proxy request url:%s \n", r.URL.String())
 		outReq, err := http.NewRequest(r.Method, r.URL.String(), r.Body)
 		if err != nil {
+			log.Printf("[sys] create request error:%s \n", err.Error())
 			http.Error(w, "[http] failed to create request", http.StatusInternalServerError)
 			return
 		}
@@ -36,7 +37,8 @@ func relay(port string) {
 		outReq.Header = r.Header
 		resp, err := transport.RoundTrip(outReq)
 		if err != nil {
-			http.Error(w, "[http] failed to forward request", http.StatusInternalServerError)
+			log.Printf("[sys] transport round trip error:%s \n", err.Error())
+			http.Error(w, "[http] failed to forward request error:"+err.Error(), http.StatusInternalServerError)
 			return
 		}
 		defer resp.Body.Close()

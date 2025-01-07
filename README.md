@@ -4,7 +4,7 @@
 > 
 > 特别是工厂的环境，很多检测服务器为了安全是不能上网的，只有用于远程的 PC 能上网，此时通过 **LightProxy** 可以将 PC 的代理服务桥接到设备B上，让设备B也能临时上网。
 
-## relay 模式
+## relay (代理上网)
 
 ```shell
 # 1. 代理转发（默认端口：8080）
@@ -12,4 +12,14 @@ proxy relay
 
 # 2. 代理转发，指定端口
 proxy relay --port 8000
+```
+
+## config (配置管理)
+
+```shell
+# 1. 清除配置
+proxy config --set 0
+
+# 2. 设置配置（set 后面的参数为 [relay 所在服务器的IP]:[relay 指定的端口]）
+proxy config --set 192.168.1.3:8080
 ```
