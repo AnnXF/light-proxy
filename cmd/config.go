@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/up-zero/gotool"
 	"os"
 	"runtime"
 	"strings"
@@ -49,11 +48,7 @@ func config(set string) {
 }
 
 func configClear() {
-	if err := removeFromBashrc("http_proxy"); err != nil {
-		println("proxy config clear failed", err.Error())
-		return
-	}
-	if err := sourceBashrc(); err != nil {
+	if err := removeFromEnv("http_proxy"); err != nil {
 		println("proxy config clear failed", err.Error())
 		return
 	}
@@ -61,68 +56,44 @@ func configClear() {
 }
 
 func configSet(domain string) {
-	if err := appendToBashrc("http_proxy", domain); err != nil {
-		println("proxy config set failed", err.Error())
-		return
-	}
-	if err := sourceBashrc(); err != nil {
+	if err := appendToEnv("http_proxy", domain); err != nil {
 		println("proxy config set failed", err.Error())
 		return
 	}
 	println("proxy config set successfully")
 }
 
-func appendToBashrc(variable, value string) error {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		return err
-	}
-	bashrcPath := homeDir + "/.bashrc"
-
-	file, err := os.OpenFile(bashrcPath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+func appendToEnv(variable, value string) error {
+	file, err := os.OpenFile("/etc/environment", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0755)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	_, err = file.WriteString(fmt.Sprintf("\nexport %s=%s", variable, value))
+	_, err = file.WriteString(fmt.Sprintf("\n%s=\"%s\"", variable, value))
 	return err
 }
 
-func sourceBashrc() error {
-	homeDir, err := os.UserHomeDir()
+func removeFromEnv(variable string) error {
+	envPath := "/etc/environment"
+	content, err := os.ReadFile(envPath)
 	if err != nil {
-		return err
-	}
-	bashrcPath := homeDir + "/.bashrc"
-	return gotool.ExecCommand("/bin/bash", "-c", "source "+bashrcPath)
-}
-
-func removeFromBashrc(variable string) error {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		return err
-	}
-	bashrcPath := homeDir + "/.bashrc"
-
-	content, err := os.ReadFile(bashrcPath)
-	if err != nil {
-		return fmt.Errorf("failed to read .bashrc: %w", err)
+		return fmt.Errorf("failed to read %s: %w", envPath, err)
 	}
 	lines := strings.Split(string(content), "\n")
 
 	var newLines []string
 	for _, line := range lines {
-		if strings.Contains(line, "export "+variable) {
+		if strings.Contains(line, variable+"=") {
 			continue
 		}
 		newLines = append(newLines, line)
 	}
 
 	newContent := strings.Join(newLines, "\n")
-	err = os.WriteFile(bashrcPath, []byte(newContent), 0644)
+	err = os.WriteFile(envPath, []byte(newContent), 0755)
 	if err != nil {
-		return fmt.Errorf("failed to write to .bashrc: %w", err)
+		return fmt.Errorf("failed to write to %s: %w", envPath, err)
 	}
 
 	return nil

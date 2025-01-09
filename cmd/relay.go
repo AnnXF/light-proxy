@@ -38,7 +38,7 @@ func relay(port string) {
 		resp, err := transport.RoundTrip(outReq)
 		if err != nil {
 			log.Printf("[sys] transport round trip error:%s \n", err.Error())
-			http.Error(w, "[http] failed to forward request error:"+err.Error(), http.StatusInternalServerError)
+			http.Error(w, "[http] transport round trip error:"+err.Error(), http.StatusInternalServerError)
 			return
 		}
 		defer resp.Body.Close()
