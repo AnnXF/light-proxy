@@ -15,8 +15,10 @@ func NewRootCommand() *cobra.Command {
 		},
 	}
 
-	// proxy 直连、桥接
+	// proxy 直连
 	cmd.AddCommand(NewRelayCommand())
+	// proxy 桥接
+	cmd.AddCommand(NewBridgeCommand())
 	// 配置
 	cmd.AddCommand(NewConfigCommand())
 
