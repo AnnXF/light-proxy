@@ -52,11 +52,19 @@ func configClear() {
 		println("proxy config clear failed", err.Error())
 		return
 	}
+	if err := removeFromEnv("https_proxy"); err != nil {
+		println("proxy config clear failed", err.Error())
+		return
+	}
 	println("proxy config clear successfully")
 }
 
 func configSet(domain string) {
 	if err := appendToEnv("http_proxy", domain); err != nil {
+		println("proxy config set failed", err.Error())
+		return
+	}
+	if err := appendToEnv("https_proxy", domain); err != nil {
 		println("proxy config set failed", err.Error())
 		return
 	}
