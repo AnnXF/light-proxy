@@ -89,9 +89,3 @@ func handleHttps(w http.ResponseWriter, r *http.Request) {
 	go transfer(destConn, clientConn)
 	go transfer(clientConn, destConn)
 }
-
-func transfer(destination io.WriteCloser, source io.ReadCloser) {
-	defer destination.Close()
-	defer source.Close()
-	io.Copy(destination, source)
-}
