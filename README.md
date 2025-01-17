@@ -33,6 +33,9 @@ proxy bridge --relay 192.168.1.3:8080
 
 # 2. 桥接转发，指定端口
 proxy bridge --relay 192.168.1.3:8080 --port 8000
+
+# PS：桥接转发 Clash 的网络
+proxy bridge --relay 127.0.0.1:7890
 ```
 
 ## config (配置管理)
