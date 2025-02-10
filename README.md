@@ -40,6 +40,8 @@ proxy bridge --relay 127.0.0.1:7890
 
 ## config (配置管理)
 
+说明：Linux 环境配置后需要重新打开新的终端
+
 ```shell
 # 1. 清除配置
 sudo proxy config --set 0

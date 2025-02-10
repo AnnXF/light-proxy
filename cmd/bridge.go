@@ -36,6 +36,7 @@ func bridge() {
 		log.Printf("[sys] listen error:%s \n", err.Error())
 		return
 	}
+	showLocalIpv4s()
 	log.Printf("[sys] proxy server start success port:%s \n", bridgePort)
 
 	for {

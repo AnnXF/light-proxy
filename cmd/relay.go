@@ -36,6 +36,7 @@ func relay(port string) {
 		}),
 	}
 
+	showLocalIpv4s()
 	log.Printf("[sys] proxy server start success port:%s \n", port)
 	log.Fatal(server.ListenAndServe())
 }
