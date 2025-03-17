@@ -47,5 +47,5 @@ proxy bridge --relay 127.0.0.1:7890
 sudo proxy config --set 0
 
 # 2. 设置配置（set 后面的参数为 [relay 所在服务器的IP]:[relay 指定的端口]）
-sudo proxy config --set 192.168.1.3:8080
+sudo proxy config --set http://192.168.1.3:8080
 ```
