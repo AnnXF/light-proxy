@@ -1,13 +1,15 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
 	"runtime"
+
+	"github.com/spf13/cobra"
 )
 
 var supportOS = map[string]struct{}{
 	"linux":   {},
 	"windows": {},
+	"darwin":  {},
 }
 
 func NewConfigCommand() *cobra.Command {
