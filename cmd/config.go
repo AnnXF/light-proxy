@@ -1,9 +1,8 @@
 package cmd
 
 import (
-	"runtime"
-
 	"github.com/spf13/cobra"
+	"runtime"
 )
 
 var supportOS = map[string]struct{}{

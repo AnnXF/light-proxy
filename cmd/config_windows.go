@@ -1,4 +1,4 @@
-//bo:build windows
+//go:build windows
 
 package cmd
 
