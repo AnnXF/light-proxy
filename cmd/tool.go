@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/up-zero/gotool"
+	"github.com/up-zero/gotool/netutil"
 	"io"
 	"log"
 	"strings"
@@ -14,7 +14,7 @@ func transfer(destination io.WriteCloser, source io.ReadCloser) {
 }
 
 func showLocalIpv4s() {
-	ips, err := gotool.Ipv4sLocal()
+	ips, err := netutil.Ipv4sLocal()
 	if err == nil {
 		log.Printf("[sys] local ipv4: %s \n", strings.Join(ips, ";"))
 	}
